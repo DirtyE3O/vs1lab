@@ -290,6 +290,10 @@ a {
 .discovery__map span {
     display: block;
 }
+.discovery fieldset button{
+    border: none;
+    color: var(--border-color);
+}
 
 /*
   Discovery Map: Ensuring map image fits container and styling caption.

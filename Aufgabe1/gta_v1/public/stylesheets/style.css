@@ -235,7 +235,7 @@ a {
 .discovery form button {
     display: block;
     font-size: 1rem;
-    width: 100%;
+    width: 30%;
     padding: 1rem;
     margin-bottom: 2rem;
 }
@@ -341,5 +341,13 @@ a {
 
     .header__navigation {
         margin-top: 1rem;
+    }
+    .discovery form input,
+    .discovery form button {
+        display: block;
+        font-size: 1rem;
+        width: 100%;
+        padding: 1rem;
+        margin-bottom: 2rem;
     }
 }

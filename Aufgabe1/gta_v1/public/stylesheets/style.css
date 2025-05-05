@@ -235,7 +235,7 @@ a {
 .discovery form button {
     display: block;
     font-size: 1rem;
-    width: 30%;
+    width: 100%;
     padding: 1rem;
     margin-bottom: 2rem;
 }

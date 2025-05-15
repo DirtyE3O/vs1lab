@@ -1,0 +1,283 @@
+/* File origin: VS1LAB A1b  
+  CSS style is BEM. Classes used for CSS, IDs for JavaScript querying (future use).
+  CSS variables used for clarity and themability (e.g. through SSR). 
+  Inherited box sizing used for ease of including 3rd party content-box components.*/
+
+/* Global styling */
+html {
+	box-sizing: border-box;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	/* This approach prevents issues with 3rd party content-box components */
+	box-sizing: inherit;
+}
+
+/* Variables (example: see declaration for "a" below) */
+:root {
+	--link-color: #00b7ff;
+	--background-color: #efefef;
+	--border-color: #cdcdcd;
+	--gray-color: #666;
+}
+
+/* HTML element styles */
+body {
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+a {
+	color: var(--link-color);
+}
+
+/* ### TODO ### Styles for other HTML elements */
+/* ... your code here ... */
+/* Grid styles (no changes required) */
+.row {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	flex: 1;
+}
+
+.col-1 {
+	width: calc(8.33% - 1rem);
+}
+
+.col-2 {
+	width: calc(16.66% - 1rem);
+}
+
+.col-3 {
+	width: calc(25% - 1rem);
+}
+
+.col-4 {
+	width: calc(33.33% - 1rem);
+}
+
+.col-5 {
+	width: calc(41.66% - 1rem);
+}
+
+.col-6 {
+	width: calc(50% - 1rem);
+}
+
+.col-7 {
+	width: calc(58.33% - 1rem);
+}
+
+.col-8 {
+	width: calc(66.66% - 1rem);
+}
+
+.col-9 {
+	width: calc(75% - 1rem);
+}
+
+.col-10 {
+	width: calc(83.33% - 1rem);
+}
+
+.col-11 {
+	width: calc(91.66% - 1rem);
+}
+
+.col-12 {
+	width: calc(100% - 1rem);
+}
+
+/* ### TODO ### Styles for Header Component */
+/* Header Layout: Flexbox layout for logo, title and navigation links.*/
+.header {
+	background-color: var(--background-color);
+	padding: 2rem 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+/* Header Image: Styling for the logo image.*/
+.header__image {
+	width: 3rem;
+	height: auto;
+	margin-right: 1rem;
+}
+
+/* ### TODO ### Styles for Main Component */
+/* Main Content Area: Expands to fill available vertical space.*/
+.main {
+	flex: 1;
+	padding: 1rem;
+}
+
+/* ### TODO ### Styles for Tagging component */
+/* Tagging Section: Styling for heading, form layout and inputs.*/
+.tagging h2 {
+	font-size: 1.5rem;
+	padding: 1rem;
+	margin-bottom: 1rem;
+}
+
+.tagging fieldset {
+	padding: 1.5rem;
+}
+
+.tagging legend {
+	font-weight: bold;
+	font-size: 1.1rem;
+}
+
+/* Tagging Form Inputs and Button: Full-width fields with spacing.*/
+.tagging form input,
+.tagging form button {
+	display: block;
+	width: 100%;
+	font-size: 1rem;
+	padding: 1rem;
+	margin-bottom: 2rem;
+}
+
+/* Tagging Form Labels: Styling labels with grey color.*/
+
+.tagging form label {
+	display: block;
+	width: 100%;
+	margin-bottom: 0.5rem;
+	color: var(--gray-color);
+	font-size: 1rem;
+}
+
+/* Read-only Inputs (Latitude and Longitude): Special styling for non-editable fields.*/
+.tagging form input[readonly] {
+	background-color: var(--background-color);
+	border: none;
+	color: var(--gray-color);
+}
+
+/* ### TODO ### Styles for Discovery component */
+/* Discovery Section: Styling for heading, form layout, and result list.*/
+.discovery h2 {
+	font-size: 1.5rem;
+	padding: 1rem;
+	margin-bottom: 1rem;
+}
+
+.discovery fieldset {
+	padding: 1.5rem;
+}
+
+.discovery legend {
+	font-weight: bold;
+	font-size: 1.1rem;
+}
+
+/* Discovery Form Inputs and Button: Form fields for searching.*/
+.discovery form input,
+.discovery form button {
+	display: block;
+	font-size: 1rem;
+	width: 30%;
+	padding: 1rem;
+	margin-bottom: 2rem;
+}
+
+/* Discovery Form Labels: Styling search form labels.*/
+.discovery form label {
+	display: block;
+	width: 100%;
+	margin-bottom: 0.5rem;
+	color: var(--gray-color);
+	font-size: 1rem;
+}
+
+/* Discovery Result List: Removing bullet points and styling list items as cards.*/
+.discovery__taglist ul {
+	list-style-type: none;
+}
+
+.discovery__taglist ul li {
+	background-color: var(--background-color);
+	padding: 1rem;
+	margin-bottom: 1rem;
+	border: 1px solid var(--border-color);
+	color: var(--link-color);
+}
+
+/* Discovery Wrapper: Flex layout for result list and map.*/
+.discovery__wrapper {
+	display: flex;
+	gap: 1rem;
+	margin-top: 2rem;
+}
+
+/* Discovery Taglist and Map: Defining flex proportions.*/
+.discovery__taglist {
+	flex: 1;
+}
+
+.discovery__map {
+	flex: 2;
+}
+
+.discovery__map span {
+	display: block;
+}
+.discovery fieldset button {
+	border: none;
+	color: var(--border-color);
+}
+
+/* Discovery Map: Ensuring map image fits container and styling caption.*/
+.discovery__map img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* ### TODO ### Styles for Footer Component */
+/* Footer: Centered text with background color.*/
+.footer {
+	background-color: var(--background-color);
+	padding: 1rem;
+}
+
+/* ### TODO ### Media Queries */
+@media (max-width: 850px) {
+	.row {
+		flex-direction: column;
+
+		.col-4,
+		.col-6,
+		.col-8,
+		.col-12 {
+			width: 100%;
+		}
+	}
+	.header {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.header__title {
+		margin-top: 1rem;
+	}
+
+	.header__navigation {
+		margin-top: 1rem;
+	}
+	.discovery form input,
+	.discovery form button {
+		display: block;
+		font-size: 1rem;
+		width: 100%;
+		padding: 1rem;
+		margin-bottom: 2rem;
+	}
+}

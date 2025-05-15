@@ -248,6 +248,10 @@ a {
 	padding: 1rem;
 }
 
+#map { 
+  height: 500px;
+}
+
 /* ### TODO ### Media Queries */
 @media (max-width: 850px) {
 	.row {

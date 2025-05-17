@@ -139,6 +139,18 @@ function updateLocation() {
         if (searchLongitude != null) {
             searchLongitude.value = longitude;
         }
+        let image = document.querySelector("#map img");
+        let caption = document.querySelector("#map span");
+
+        if ( image) {
+            image.remove();
+        }
+        if (caption) {
+            caption.remove();
+        }
+        let map = new MapManager();
+        map.initMap(latitude, longitude);
+        map.updateMarkers(latitude, longitude);
     });
 }
 

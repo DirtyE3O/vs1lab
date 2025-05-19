@@ -139,7 +139,7 @@ function updateLocation() {
         if (searchLongitude != null) {
             searchLongitude.value = longitude;
         }
-        let image = document.querySelector("#map img");
+        let image = document.querySelector("#mapView");
         let caption = document.querySelector("#map span");
 
         if ( image) {

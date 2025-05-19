@@ -118,9 +118,9 @@ class MapManager {
  * It is called once the page has been fully loaded.
  */
 function updateLocation() {
-    LocationHelper.findLocation((location) => {
-        var latitude = location.latitude;
-        var longitude = location.longitude;
+    LocationHelper.findLocation((helper) => {
+        var latitude = helper.latitude;
+        var longitude = helper.longitude;
 
         var tagLatitude = document.getElementById("tag-latitude");
         var tagLongitude = document.getElementById("tag-longitude");

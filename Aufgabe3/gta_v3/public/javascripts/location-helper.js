@@ -38,7 +38,7 @@ class LocationHelper {
      * @param {*} callback a function that will be called with a LocationHelper instance as parameter, that has the current location details
      */
     static findLocation(callback) {
-        const geoLocationApi = navigator.geolocation
+        const geoLocationApi = navigator.geolocation;
 
         if (!geoLocationApi) {
             throw new Error("The GeoLocation API is unavailable.");

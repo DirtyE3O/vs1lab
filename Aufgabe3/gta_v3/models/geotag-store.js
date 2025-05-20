@@ -24,8 +24,56 @@
  * - Keyword matching should include partial matches from name or hashtag fields. 
  */
 class InMemoryGeoTagStore{
+    #tags;
 
-    // TODO: ... your code here ...
+    constructor() {
+        this.#tags = [];
+    }
+
+    addGeoTag(tag) {
+        this.#tags.push(tag);
+    }
+
+    removeGeoTag(name) {
+        for (let i = 0; i < this.#tags.length; i++) {
+            if (this.#tags[i].name === name) {
+            this.#tags.splice(i, 1); // 1 Element entfernen
+            i--; // Korrektur für gelöschtes Element
+            }
+        }
+    }
+
+    getNearbyGeoTags(location, radius) {
+        const result = [];
+        const latitude = location.latitude;
+        const longitude = location.longitude;
+        const radiusSquare = radius * radius;
+
+        for (var i = 0; i < this.#tags.length; i++) {
+        const tag = this.#tags[i];
+
+        const latitudeDiff = tag.latitude - latitude;
+        const longitudeDiff = tag.longitude - longitude;
+            if (latitudeDiff * latitudeDiff + longitudeDiff * longitudeDiff <= radiusSquare) { //Pythagoras
+            result.push(tag);
+            }
+        }
+
+    return result;
+    }
+
+    searchNearbyGeoTags(location, radius, keyword) {
+    const nearbyTags = this.getNearbyGeoTags(location, radius);
+    const result = [];
+
+    for (let i = 0; i < nearbyTags.length; i++) {
+        const tag = nearbyTags[i];
+        if (tag.name.includes(keyword) || tag.hashtag.includes(keyword)) {
+            result.push(tag);
+        }
+    }
+    return result;
+}
 
 }
 

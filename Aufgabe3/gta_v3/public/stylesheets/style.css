@@ -240,6 +240,9 @@ a {
 	height: auto;
 	display: block;
 }
+#map {
+	height: 500px;
+}
 
 /* ### TODO ### Styles for Footer Component */
 /* Footer: Centered text with background color.*/

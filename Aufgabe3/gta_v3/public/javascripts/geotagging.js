@@ -23,7 +23,8 @@ function updateLocation() {
     const searchLongitude = document.getElementById("search-longitude");
 
     const needsLocation = !tagLatitude.value || !tagLongitude.value ||
-        !searchLatitude.value || !searchLongitude.value;
+        !searchLatitude.value || !searchLongitude.value || tagLatitude.value == "49.01379" ||
+        tagLongitude.value == "8.390071";
 
     let latitude;
     let longitude;
@@ -44,14 +45,23 @@ function updateLocation() {
         }
         let map = new MapManager();
         map.initMap(latitude, longitude);
-        map.updateMarkers(latitude, longitude);
+        const mapTags = document.getElementById("map");
+        let taglist_json = mapTags.getAttribute("data-tags");
+
+        if (!taglist_json) {
+            taglist_json = "[]";
+        }
+
+        const taglist = JSON.parse(taglist_json);
+
+        map.updateMarkers(latitude, longitude, taglist);
         return;
 
     }
 
     LocationHelper.findLocation(function (helper) {
-        latitude = helper.latitude;
-        longitude = helper.longitude;
+        latitude = parseFloat(helper.latitude);
+        longitude = parseFloat(helper.longitude);
 
         if (tagLatitude != null) {
             tagLatitude.value = latitude;

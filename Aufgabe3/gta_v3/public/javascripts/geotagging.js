@@ -67,7 +67,17 @@ function updateLocation() {
         }
         let map = new MapManager();
         map.initMap(latitude, longitude);
-        map.updateMarkers(latitude, longitude);
+
+        const mapTags = document.getElementById("map");
+        let taglist_json = mapTags.getAttribute("data-tags");
+
+        if (!taglist_json) {
+            taglist_json = "[]";
+        }
+
+        const taglist = JSON.parse(taglist_json);
+
+        map.updateMarkers(latitude, longitude, taglist);
     });
 }
 

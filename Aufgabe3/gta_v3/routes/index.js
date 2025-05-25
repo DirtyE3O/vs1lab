@@ -32,6 +32,10 @@ const GeoTag = require('../models/geotag');
 const GeoTagStore = require('../models/geotag-store');
 
 const store = new GeoTagStore();
+
+
+const geoTagExamples = require('../models/geotag-examples');
+geoTagExamples.populate(store);
 /**
  * Route '/' for HTTP 'GET' requests.
  * (http://expressjs.com/de/4x/api.html#app.get.method)

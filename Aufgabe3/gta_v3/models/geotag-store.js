@@ -30,15 +30,6 @@ class InMemoryGeoTagStore{
 
     constructor() {
         this.#tags = [];
-
-        this.addGeoTag(new GeoTag('Castle', 49.013790, 8.404435, '#sight'));
-        this.addGeoTag(new GeoTag('IWI', 49.013790, 8.390071, '#edu'));
-        this.addGeoTag(new GeoTag('Building E', 49.014993, 8.390049, '#campus'));
-        this.addGeoTag(new GeoTag('Building F', 49.015608, 8.390112, '#campus'));
-        this.addGeoTag(new GeoTag('Building M', 49.016171, 8.390155, '#campus'));
-        this.addGeoTag(new GeoTag('Building LI', 49.015636, 8.389318, '#campus'));
-        this.addGeoTag(new GeoTag('Auditorium He', 49.014915, 8.389264, '#campus'));
-        this.addGeoTag(new GeoTag('Building R', 49.014992, 8.392365, '#campus'));
     }
 
     addGeoTag(tag) {

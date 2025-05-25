@@ -34,8 +34,7 @@ class GeoTagExamples {
         ];
     }
 
-    static populate() {
-        const store = new InMemoryGeoTagStore();
+    static populate(store) {
         const examples = this.tagList;
         for (let i = 0; i < examples.length; i++) {
             const example = examples[i];

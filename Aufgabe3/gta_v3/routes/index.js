@@ -47,8 +47,8 @@ geoTagExamples.populate(store);
 
 // TODO: extend the following route example if necessary
 router.get('/', (req, res) => {
-    const allTags = store.getGeoTags()
-    res.render('index', {taglist: allTags})
+
+    res.render('index', {taglist:[]})
 });
 
 /**

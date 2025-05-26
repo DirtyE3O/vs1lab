@@ -48,7 +48,7 @@ geoTagExamples.populate(store);
 // TODO: extend the following route example if necessary
 router.get('/', (req, res) => {
 
-    res.render('index', {taglist:[]})
+    res.render('index', {taglist: []})
 });
 
 /**
@@ -78,8 +78,8 @@ router.post('/tagging', function (req, res) {
     const tag = new GeoTag(name, latitude, longitude, hashtag);
     store.addGeoTag(tag);
 
-    const location = { latitude, longitude };
-    const tags = store.getNearbyGeoTags(location, 10.0);
+    const location = {latitude, longitude};
+    const tags = store.getNearbyGeoTags(location, 0.01);
     res.render('index', {taglist: tags});
 
 
@@ -110,12 +110,16 @@ router.post('/discovery', function (req, res) {
     const longitude = parseFloat(req.body.longitude);
     const searchTerm = req.body.searchterm;
 
-    const location = { latitude, longitude };
-    let tags = store.getNearbyGeoTags(location, 10.0);
+    const location = {latitude, longitude};
+    let tags;
 
-    if (searchTerm.trim() !== ""){
-        tags = store.searchNearbyGeoTags(location, 10.0, searchTerm);
+    if (searchTerm.trim() !== "") {
+        tags = store.searchNearbyGeoTags(location, 0.1, searchTerm);
+    } else {
+        tags = store.getNearbyGeoTags(location, 0.1);
+
     }
+
     res.render('index', {taglist: tags});
 
 })

@@ -55,7 +55,7 @@ class InMemoryGeoTagStore{
         const longitude = location.longitude;
         const radiusSquare = radius * radius;
 
-        for (var i = 0; i < this.#tags.length; i++) {
+        for (let i = 0; i < this.#tags.length; i++) {
         const tag = this.#tags[i];
 
         const latitudeDiff = tag.latitude - latitude;

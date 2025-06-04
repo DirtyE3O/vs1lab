@@ -27,19 +27,21 @@ const GeoTag = require('../models/geotag');
 // eslint-disable-next-line no-unused-vars
 const GeoTagStore = require('../models/geotag-store');
 
+const tagStore = new GeoTagStore();
+
 // App routes (A3)
 
 /**
  * Route '/' for HTTP 'GET' requests.
  * (http://expressjs.com/de/4x/api.html#app.get.method)
- *
+ * 
  * Requests cary no parameters
  *
  * As response, the ejs-template is rendered without geotag objects.
  */
 
 router.get('/', (req, res) => {
-  res.render('index', { taglist: [] })
+  res.render('index', { taglist: [] });
 });
 
 // API routes (A4)
@@ -57,7 +59,24 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
+router.get('/api/geotags', (req, res) => {
+  const { latitude, longitude, searchterm } = req.query;
+  let result = tagStore.getGeoTags();
 
+  if (searchterm != null) {
+    result = tagStore.searchByTerm(result, searchterm);
+  }
+
+  if (latitude != null && longitude != null) {
+    const location = {
+      latitude: latitude,
+      longitude: longitude
+    };
+    result = tagStore.getNearbyGeoTags(location, 1.0, searchterm);
+  }
+
+  res.json(result);
+});
 
 /**
  * Route '/api/geotags' for HTTP 'POST' requests.
@@ -71,7 +90,18 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
+router.post('/api/geotags', (req, res) => {
+  const { id, name, hashtag, latitude, longitude } = req.body;
 
+  const tag = new GeoTag(id, name, latitude, longitude, hashtag);
+
+  tagStore.addGeoTag(tag);
+
+  
+  res.status(201) 
+    .location(`/api/geotags/${tag.id}`)
+    .json(tag);
+});
 
 /**
  * Route '/api/geotags/:id' for HTTP 'GET' requests.
@@ -84,7 +114,11 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
+router.get('/api/geotags/:id', (req, res) => {
+  const tag = tagStore.getTagById(req.params.id);
 
+  res.json(tag);
+});
 
 /**
  * Route '/api/geotags/:id' for HTTP 'PUT' requests.
@@ -101,7 +135,21 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
+router.put('/api/geotags/:id', (req, res) => {
+  const existing = tagStore.getTagById(req.params.id);
+  
+  if (existing != null) {
+    tagStore.removeGeoTagById(req.params.id);
+  }
 
+  const { id, name, hashtag, latitude, longitude } = req.body;
+
+  const updatedTag = new GeoTag(id, name, latitude, longitude, hashtag);
+
+  tagStore.addGeoTag(updatedTag);
+
+  res.json(updatedTag);
+});
 
 /**
  * Route '/api/geotags/:id' for HTTP 'DELETE' requests.
@@ -115,5 +163,11 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
+
+router.delete('/api/geotags/:id', (req, res) => {
+  const deleted = tagStore.removeGeoTagById(req.params.id);
+
+  res.json(deleted);
+});
 
 module.exports = router;

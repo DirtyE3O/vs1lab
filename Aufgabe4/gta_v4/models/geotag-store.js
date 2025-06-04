@@ -48,6 +48,21 @@ class InMemoryGeoTagStore{
             }
         }
     }
+    removeGeoTagById(id) {
+        for (let i = 0; i < this.#tags.length; i++) {
+            if (this.#tags[i].id === id) {
+            this.#tags.splice(i, 1); // 1 Element entfernen
+            i--; // Korrektur für gelöschtes Element
+            }
+        }
+    }
+    getTagById(id) {
+        for (let i = 0; i < this.#tags.length; i++) {
+            if (this.#tags[i].id === id) {
+            return this.#tags[i];
+            }
+        }
+    }
 
     getNearbyGeoTags(location, radius) {
         const result = [];
@@ -72,14 +87,24 @@ class InMemoryGeoTagStore{
     const nearbyTags = this.getNearbyGeoTags(location, radius);
     const result = [];
 
-    for (let i = 0; i < nearbyTags.length; i++) {
+        for (let i = 0; i < nearbyTags.length; i++) {
         const tag = nearbyTags[i];
         if (tag.name.includes(keyword) || tag.hashtag.includes(keyword)) {
             result.push(tag);
         }
-    }
+        }
     return result;
-}
+    }
+    searchByTerm(result, searchterm) {
+        let result = [];
+        for (let i = 0; i < this.#tags.length; i++) {
+            if (tag.name.includes(searchterm) || tag.hashtag.includes(searchterm)) {
+                result.push(this.#tags[i])
+            }
+        }
+    }
+    
+
 
 }
 

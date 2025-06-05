@@ -28,6 +28,8 @@ const GeoTag = require('../models/geotag');
 const GeoTagStore = require('../models/geotag-store');
 
 const tagStore = new GeoTagStore();
+const geoTagExamples = require('../models/geotag-examples');
+geoTagExamples.populate(tagStore);
 
 // App routes (A3)
 

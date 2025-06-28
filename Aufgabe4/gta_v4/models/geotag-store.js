@@ -27,16 +27,12 @@ const GeoTag = require("./geotag");
  */
 class InMemoryGeoTagStore{
     #tags;
-    #nextId
 
     constructor() {
         this.#tags = [];
-        this.#nextId = 1;
     }
 
     addGeoTag(tag) {
-        tag.id = this.#nextId;
-        this.#nextId++;
         this.#tags.push(tag);
     }
 

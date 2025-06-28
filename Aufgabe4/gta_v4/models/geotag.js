@@ -11,14 +11,13 @@
  */
 class GeoTag {
 
-    constructor(id, name, latitude, longitude, hashtag) {
+    constructor( name, latitude, longitude, hashtag) {
         this.id = GeoTag.nextID();
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.hashtag = hashtag;
     }
-
 
     static nextID() {
         GeoTag.currentID = (GeoTag.currentID || 0) + 1;

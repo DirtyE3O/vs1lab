@@ -21,7 +21,7 @@ class GeoTag {
 
     static nextID() {
         GeoTag.currentID = (GeoTag.currentID || 0) + 1;
-        return GeoTag.currentID.toString();
+        return GeoTag.currentID;
     }
 
 }

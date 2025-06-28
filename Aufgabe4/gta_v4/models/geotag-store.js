@@ -40,7 +40,7 @@ class InMemoryGeoTagStore{
         return this.#tags;
     }
 
-    removeGeoTag(name) {
+    removeGeoTagByName(name) {
         for (let i = 0; i < this.#tags.length; i++) {
             if (this.#tags[i].name === name) {
             this.#tags.splice(i, 1); // 1 Element entfernen
@@ -95,11 +95,12 @@ class InMemoryGeoTagStore{
         }
     return result;
     }
-    searchByTerm(result, searchterm) {
-        let result = [];
+    searchByTerm(searchTerm) {
+        const result = [];
         for (let i = 0; i < this.#tags.length; i++) {
-            if (tag.name.includes(searchterm) || tag.hashtag.includes(searchterm)) {
-                result.push(this.#tags[i])
+            const tag = this.#tags[i];
+            if (tag.name.includes(searchTerm) || tag.hashtag.includes(searchTerm)) {
+                result.push(tag);
             }
         }
         return result;

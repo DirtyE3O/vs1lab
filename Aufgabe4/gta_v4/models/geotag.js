@@ -11,19 +11,31 @@
  */
 class GeoTag {
 
-    constructor( name, latitude, longitude, hashtag) {
-        this.id = GeoTag.nextID();
+     #id;
+    constructor(name, latitude, longitude, hashtag) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.hashtag = hashtag;
     }
 
-    static nextID() {
-        GeoTag.currentID = (GeoTag.currentID || 0) + 1;
-        return GeoTag.currentID;
+    setId(id){
+        this.#id = id;
     }
 
+    getId(){
+        return this.#id;
+    }
+
+    toJSON() {
+        return {
+            id: this.#id,
+            name: this.name,
+            latitude: this.latitude,
+            longitude: this.longitude,
+            hashtag: this.hashtag
+        };
+    }
 }
 
 module.exports = GeoTag;

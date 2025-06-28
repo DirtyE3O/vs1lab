@@ -25,7 +25,7 @@ function updateLocation() {
     const searchLatitude = document.getElementById("search-latitude");
     const searchLongitude = document.getElementById("search-longitude");
 
-    function setLocation(){
+    function setLocation() {
         if (tagLatitude != null) {
             tagLatitude.value = latitude;
         }
@@ -63,29 +63,23 @@ function updateLocation() {
 
     }
 
-    if (window.location.pathname === "/") {
+    const savedLat = sessionStorage.getItem("savedLatitude");
+    const savedLon = sessionStorage.getItem("savedLongitude");
+
+    if (savedLat && savedLon) {
+        latitude = savedLat;
+        longitude = savedLon;
+        setLocation();
+    } else {
         LocationHelper.findLocation((helper) => {
             latitude = helper.latitude;
             longitude = helper.longitude;
-
-
-           setLocation();
-
             sessionStorage.setItem("savedLatitude", latitude);
             sessionStorage.setItem("savedLongitude", longitude);
-
-
+            setLocation();
         });
-    } else {
-        latitude = sessionStorage.getItem("savedLatitude");
-        longitude = sessionStorage.getItem("savedLongitude");
-
-        setLocation();
-
     }
 }
-
-
 
 
 // Wait for the page to fully load its DOM content, then call updateLocation

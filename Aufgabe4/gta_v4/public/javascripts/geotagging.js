@@ -4,10 +4,12 @@
 
 // This script is executed when the browser loads index.html.
 
-// "console.log" writes to the browser's console. 
+// "console.log" writes to the browser's console.
 // The console window must be opened explicitly in the browser.
 // Try to find this output in the browser...
 console.log("The geoTagging script is going to start...");
+
+const map = new MapManager();
 
 
 /**
@@ -47,7 +49,6 @@ function updateLocation() {
         if (caption) {
             caption.remove();
         }
-        let map = new MapManager();
         map.initMap(latitude, longitude);
 
         const mapTags = document.getElementById("map");
@@ -83,4 +84,108 @@ function updateLocation() {
 
 
 // Wait for the page to fully load its DOM content, then call updateLocation
-document.addEventListener("DOMContentLoaded", updateLocation); //Locationupdate
+document.addEventListener("DOMContentLoaded", function () {
+    updateLocation();
+
+    const tagForm = document.querySelector('#tag-form');
+    if (tagForm) {
+        tagForm.addEventListener('submit', handleTagSubmit);
+    }
+
+    const discoveryForm = document.querySelector('#discoveryFilterForm');
+    if (discoveryForm) {
+        discoveryForm.addEventListener('submit', handleDiscoverySubmit);
+    }
+});
+
+async function handleTagSubmit(event){
+    event.preventDefault();
+
+    const name = document.getElementById("tag-name")?.value;
+    const latitude = parseFloat(document.getElementById("tag-latitude")?.value);
+    const longitude = parseFloat(document.getElementById("tag-longitude")?.value);
+    const hashtag = document.getElementById("tag-hashtag")?.value;
+
+    if (!name || isNaN(latitude) || isNaN(longitude)) {
+        console.error("Missing or invalid input.");
+        return;
+    }
+
+    const tagData = { name, latitude, longitude, hashtag };
+
+    try {
+        const response = await fetch("/api/geotags", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(tagData)
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to create GeoTag.");
+        }
+
+        const result = await response.json();
+        console.log("GeoTag created:", result);
+
+       appendNewTagToList(result);
+
+
+    } catch (error) {
+        console.error("Error adding GeoTag:", error);
+    }
+
+}
+
+function appendNewTagToList(tag) {
+    const list = document.getElementById("discoveryResults");
+    const listItem = document.createElement("li");
+    listItem.innerText = `${tag.name} (${tag.latitude}, ${tag.longitude}) ${tag.hashtag}`;
+    list.appendChild(listItem);
+}
+
+
+async function handleDiscoverySubmit(event) {
+
+    event.preventDefault();
+
+    const searchTerm = document.getElementById("search-term")?.value || "";
+    console.log("Searching for:", searchTerm);
+    const latitude = parseFloat(document.getElementById("search-latitude")?.value);
+    const longitude = parseFloat(document.getElementById("search-longitude")?.value);
+
+    const params = new URLSearchParams({
+        latitude: latitude,
+        longitude: longitude,
+        searchterm: searchTerm
+    });
+
+    try {
+        const response = await fetch(`/api/geotags?${params}`);
+        console.log(`/api/geotags?${params}`);
+        if (!response.ok) throw new Error("Network response not ok");
+
+        const tags = await response.json();
+        console.log(tags)
+
+        updateDiscoveryResults(tags, latitude, longitude);
+
+    } catch (error) {
+        console.error("Discovery fetch error:", error);
+    }
+}
+function updateDiscoveryResults(tags, latitude, longitude) {
+    // update list
+    const list = document.getElementById("discoveryResults");
+    list.innerHTML = ""; // clear current
+
+    tags.forEach(tag => {
+        const listItem = document.createElement("li");
+        listItem.innerText = `${tag.name} (${tag.latitude}, ${tag.longitude}) ${tag.hashtag}`;
+        list.appendChild(listItem);
+    });
+
+    //upadte map
+    map.updateMarkers(latitude, longitude, tags);
+}

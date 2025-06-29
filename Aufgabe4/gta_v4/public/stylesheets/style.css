@@ -229,16 +229,16 @@ a {
 .discovery__map span {
 	display: block;
 }
-.discovery fieldset button {
-	border: none;
-	color: var(--border-color);
-}
+
 
 /* Discovery Map: Ensuring map image fits container and styling caption.*/
 .discovery__map img {
 	width: 100%;
 	height: auto;
 	display: block;
+}
+#map {
+	height: 500px;
 }
 
 /* ### TODO ### Styles for Footer Component */

@@ -126,6 +126,7 @@ async function handleTagSubmit(event) {
             throw new Error("Failed to create GeoTag.");
         }
 
+
         const result = await response.json();
         console.log("GeoTag created:", result);
 
@@ -135,6 +136,24 @@ async function handleTagSubmit(event) {
     } catch (error) {
         console.error("Error adding GeoTag:", error);
     }
+    const searchLatitude = parseFloat(document.getElementById("search-latitude")?.value);
+    const searchLongitude = parseFloat(document.getElementById("search-longitude")?.value);
+    const searchTerm =  "";
+
+    const params = new URLSearchParams({
+        latitude: searchLatitude,
+        longitude: searchLongitude,
+        searchterm: searchTerm,
+        page: 1,
+        limit: 5
+    });
+
+    const discoveryResponse = await fetch(`/api/geotags?${params}`);
+    if (discoveryResponse.ok) {
+        const discoveryData = await discoveryResponse.json();
+        updateDiscoveryResults(discoveryData, searchLatitude, searchLongitude);
+    }
+
 
 }
 
@@ -189,7 +208,7 @@ function updateDiscoveryResults(data, latitude, longitude) {
 
     //upadte map
     map.updateMarkers(latitude, longitude, data.tags);
-    updatePagination(data.currentPage,data.totalPages, data.totalItems);
+    updatePagination(data.currentPage, data.totalPages, data.totalItems);
 }
 
 function updatePagination(currentPage, totalPages, totalItems) {

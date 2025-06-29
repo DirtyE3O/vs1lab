@@ -65,7 +65,13 @@ router.get('/api/geotags', (req, res) => {
     const {latitude, longitude, searchterm} = req.query;
     let result;
 
-    const location = {latitude, longitude};
+    const location = {
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude)
+    };
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
 
     if (searchterm.trim() !== "") {
         result = tagStore.searchNearbyGeoTags(location, 1, searchterm);
@@ -74,7 +80,19 @@ router.get('/api/geotags', (req, res) => {
 
     }
 
-    res.json(result);
+    const startIndex = (page -1) * limit;
+    const endIndex = startIndex + limit;
+
+    const paginated = result.slice(startIndex,endIndex);
+
+
+    res.json({
+        currentPage: page,
+        totalItems: result.length,
+        totalPages: Math.ceil(result.length / limit),
+        tags: paginated
+
+    });
 });
 
 /**

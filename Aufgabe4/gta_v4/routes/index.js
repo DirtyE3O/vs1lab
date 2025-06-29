@@ -62,21 +62,21 @@ router.get('/', (req, res) => {
 
 // TODO: ... your code here ...
 router.get('/api/geotags', (req, res) => {
-    const {latitude, longitude, searchterm} = req.query;
+    const {latitude, longitude, searchterm, radius} = req.query;
     let result;
 
     const location = {
         latitude: parseFloat(latitude),
         longitude: parseFloat(longitude)
     };
-
+    const searchRadius = parseFloat(radius) || 1;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
 
     if ((searchterm).trim() !== "") {
-        result = tagStore.searchNearbyGeoTags(location, 1, searchterm);
+        result = tagStore.searchNearbyGeoTags(location, searchRadius, searchterm);
     } else {
-        result = tagStore.getNearbyGeoTags(location, 1);
+        result = tagStore.getNearbyGeoTags(location, searchRadius);
 
     }
 

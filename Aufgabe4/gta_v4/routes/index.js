@@ -73,17 +73,17 @@ router.get('/api/geotags', (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
 
-    if (searchterm.trim() !== "") {
+    if ((searchterm).trim() !== "") {
         result = tagStore.searchNearbyGeoTags(location, 1, searchterm);
     } else {
         result = tagStore.getNearbyGeoTags(location, 1);
 
     }
 
-    const startIndex = (page -1) * limit;
+    const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
 
-    const paginated = result.slice(startIndex,endIndex);
+    const paginated = result.slice(startIndex, endIndex);
 
 
     res.json({
@@ -158,17 +158,18 @@ router.put('/api/geotags/:id', (req, res) => {
     const existing = tagStore.getTagById(req.params.id);
 
     if (existing != null) {
+        const {name, hashtag, latitude, longitude} = req.body;
+
+        const updatedTag = new GeoTag(name, latitude, longitude, hashtag);
+
         tagStore.removeGeoTagById(req.params.id);
+        updatedTag.setId(req.params.id);
+        tagStore.addGeoTag(updatedTag);
+
+        res.json(updatedTag);
+    } else {
+        res.status(404).json({error: 'GeoTag not found'});
     }
-
-    const {name, hashtag, latitude, longitude} = req.body;
-
-    const updatedTag = new GeoTag(name, latitude, longitude, hashtag);
-    updatedTag.setId(req.params.id);
-
-    tagStore.addGeoTag(updatedTag);
-
-    res.json(updatedTag);
 });
 
 /**

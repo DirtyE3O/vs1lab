@@ -35,7 +35,9 @@ class InMemoryGeoTagStore {
     }
 
     addGeoTag(tag) {
-        tag.setId(this.#nextID++);
+        if (!tag.getId()) {
+            tag.setId(this.#nextID++);
+        }
         this.#tags.push(tag);
     }
 

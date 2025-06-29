@@ -73,7 +73,7 @@ router.get('/api/geotags', (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
 
-    if ((searchterm).trim() !== "") {
+    if ((searchterm || "").trim() !== "") {
         result = tagStore.searchNearbyGeoTags(location, searchRadius, searchterm);
     } else {
         result = tagStore.getNearbyGeoTags(location, searchRadius);

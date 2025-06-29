@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-async function handleTagSubmit(event){
+async function handleTagSubmit(event) {
     event.preventDefault();
 
     const name = document.getElementById("tag-name")?.value;
@@ -111,7 +111,7 @@ async function handleTagSubmit(event){
         return;
     }
 
-    const tagData = { name, latitude, longitude, hashtag };
+    const tagData = {name, latitude, longitude, hashtag};
 
     try {
         const response = await fetch("/api/geotags", {
@@ -129,7 +129,7 @@ async function handleTagSubmit(event){
         const result = await response.json();
         console.log("GeoTag created:", result);
 
-       appendNewTagToList(result);
+        appendNewTagToList(result);
 
 
     } catch (error) {
@@ -166,26 +166,82 @@ async function handleDiscoverySubmit(event) {
         console.log(`/api/geotags?${params}`);
         if (!response.ok) throw new Error("Network response not ok");
 
-        const tags = await response.json();
-        console.log(tags)
+        const data = await response.json();
+        console.log(data)
 
-        updateDiscoveryResults(tags, latitude, longitude);
+        updateDiscoveryResults(data, latitude, longitude);
 
     } catch (error) {
         console.error("Discovery fetch error:", error);
     }
 }
-function updateDiscoveryResults(tags, latitude, longitude) {
+
+function updateDiscoveryResults(data, latitude, longitude) {
     // update list
     const list = document.getElementById("discoveryResults");
     list.innerHTML = ""; // clear current
 
-    tags.forEach(tag => {
+    data.tags.forEach(tag => {
         const listItem = document.createElement("li");
         listItem.innerText = `${tag.name} (${tag.latitude}, ${tag.longitude}) ${tag.hashtag}`;
         list.appendChild(listItem);
     });
 
     //upadte map
-    map.updateMarkers(latitude, longitude, tags);
+    map.updateMarkers(latitude, longitude, data.tags);
+    updatePagination(data.currentPage,data.totalPages, data.totalItems);
+}
+
+function updatePagination(currentPage, totalPages, totalItems) {
+    const paginationDiv = document.getElementById("pagination");
+    paginationDiv.innerHTML = "";
+
+    const prev = document.createElement("button");
+    prev.innerText = "<";
+    prev.disabled = currentPage === 1;
+    prev.addEventListener("click", function () {
+        if (currentPage > 1) {
+            submitDiscoveryWithPage(currentPage - 1);
+        }
+    });
+    paginationDiv.appendChild(prev);
+
+    const pageIndicator = document.createElement("span");
+    pageIndicator.innerText = ` Page ${currentPage} of ${totalPages} (${totalItems}) `;
+    paginationDiv.appendChild(pageIndicator);
+
+    const next = document.createElement("button");
+    next.innerText = ">";
+    next.disabled = currentPage === totalPages;
+    next.addEventListener("click", function () {
+        if (currentPage < totalPages) {
+            submitDiscoveryWithPage(currentPage + 1);
+        }
+    });
+    paginationDiv.appendChild(next);
+}
+
+function submitDiscoveryWithPage(page) {
+    const searchTerm = document.getElementById("search-term")?.value || "";
+    const latitude = parseFloat(document.getElementById("search-latitude")?.value);
+    const longitude = parseFloat(document.getElementById("search-longitude")?.value);
+
+    const params = new URLSearchParams({
+        latitude: latitude,
+        longitude: longitude,
+        searchterm: searchTerm,
+        page: page,
+        limit: 5
+    });
+    fetch(`/api/geotags?${params}`)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            updateDiscoveryResults(data, latitude, longitude);
+        })
+        .catch(function (error) {
+            console.error("Pagination fetch eror:", error)
+        })
+
 }
